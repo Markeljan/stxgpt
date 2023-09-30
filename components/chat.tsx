@@ -14,16 +14,17 @@ export interface ChatProps extends React.ComponentProps<'div'> {
 }
 
 export function Chat({ initialMessages, className }: ChatProps) {
-    const { messages, append, reload, stop, isLoading, input, setInput } =
+    const { messages, append, reload, stop, isLoading, input, setInput, } =
         useChat({
             initialMessages,
             onResponse(response) {
-                if (response.status === 401) {
-                    toast.error(response.statusText)
+                if (response.status !== 200) {
+
+                    toast.error(response.status + ' ' + response.statusText)
                 }
-            }
+            },
         })
-        
+
     return (
         <>
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>

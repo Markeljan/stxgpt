@@ -1,6 +1,6 @@
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { Configuration, OpenAIApi } from 'openai-edge'
-import { SYSTEM_MESSAGE } from '@/lib/prompts'
+import { SYSTEM_PROMPT, EXAMPLE_SIMPLE_NFT, EXAMPLE_POAP_NFT } from '@/lib/prompts'
 export const runtime = 'edge'
 
 const configuration = new Configuration({
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
   const res = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
-    messages: [SYSTEM_MESSAGE, ...messages],
+    messages: [SYSTEM_PROMPT, EXAMPLE_SIMPLE_NFT, EXAMPLE_POAP_NFT, ...messages],
     temperature: 0.7,
     stream: true
   })
