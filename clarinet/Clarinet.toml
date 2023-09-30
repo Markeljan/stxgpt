@@ -1,0 +1,19 @@
+[project]
+name = 'counter'
+description = 'Demonstrates a basic NFT collection that conforms to the SIP-009 NFT standard'
+authors = []
+telemetry = true
+cache_dir = './.cache'
+
+[contracts.counter]
+path = 'contracts/counter.clar'
+clarity_version = 1
+epoch = 2.05
+[repl.analysis]
+passes = ['check_checker']
+
+[repl.analysis.check_checker]
+strict = false
+trusted_sender = true
+trusted_caller = false
+callee_filter = false
