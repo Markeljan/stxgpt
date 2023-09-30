@@ -5,14 +5,33 @@ import remarkMath from 'remark-math'
 import { cn } from '@/lib/utils'
 import { CodeBlock } from '@/components/ui/codeblock'
 import { MemoizedReactMarkdown } from '@/components/markdown'
-import { IconOpenAI, IconUser } from '@/components/ui/icons'
+import { IconF, IconOpenAI, IconUser } from '@/components/ui/icons'
 import { ChatMessageActions } from '@/components/chat-message-actions'
+import { Button } from '@/components/ui/button'
 
 export interface ChatMessageProps {
     message: Message
 }
 
 export function ChatMessage({ message, ...props }: ChatMessageProps) {
+    if (message.function_call) {
+        return (
+            <div
+                className="group relative mb-4 flex items-start md:-ml-12"
+                {...props}
+            >
+                <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border bg-primary text-primary-foreground shadow">
+                    <IconOpenAI />
+                </div>
+                <div className="ml-4 flex-1 space-y-2 px-1">
+                    <Button className='pointer-events-none' variant="default">
+                        Function Call
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div
             className={cn('group relative mb-4 flex items-start md:-ml-12')}

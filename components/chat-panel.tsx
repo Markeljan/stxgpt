@@ -5,6 +5,7 @@ import { PromptForm } from '@/components/prompt-form'
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
 import { IconRefresh, IconStop } from '@/components/ui/icons'
 import { FooterText } from '@/components/footer'
+import { functionSchemas } from '@/lib/function-schemas'
 
 export interface ChatPanelProps
   extends Pick<
@@ -50,7 +51,9 @@ export function ChatPanel({
             messages?.length > 0 && (
               <Button
                 variant="outline"
-                onClick={() => reload()}
+                onClick={() => reload({
+                  functions: functionSchemas
+                })}
                 className="bg-background"
               >
                 <IconRefresh className="mr-2" />
@@ -66,7 +69,9 @@ export function ChatPanel({
                 id,
                 content: value,
                 role: 'user'
-              })
+              },
+                { functions: functionSchemas }
+              )
             }}
             input={input}
             setInput={setInput}

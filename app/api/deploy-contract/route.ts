@@ -9,9 +9,8 @@ export async function POST(req: Request) {
 
     console.log("request received:", json);
 
-    const network: StacksNetwork = networkName === 'mainnet' ? new StacksMainnet() :
-        networkName === 'devnet' ? new StacksDevnet() :
-            new StacksTestnet()
+    // mainnet disabled for now
+    const network: StacksNetwork = networkName === 'devnet' ? new StacksDevnet() : new StacksTestnet()
 
     const formattedContractName = contractName?.replace(/([a-z])([A-Z])/g, '$1-$2')?.toLowerCase();
     const senderKey = networkName === 'devnet' ?
@@ -24,6 +23,7 @@ export async function POST(req: Request) {
         senderKey,
         network,
         anchorMode: AnchorMode.Any,
+        fee: BigInt(1000),
     };
 
     try {

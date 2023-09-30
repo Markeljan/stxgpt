@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { ChatList } from '@/components/chat-list'
 import { ChatPanel } from '@/components/chat-panel'
 import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
+import functionCallHandler from '@/lib/function-call-handler'
 
 
 export interface ChatProps extends React.ComponentProps<'div'> {
@@ -14,9 +15,10 @@ export interface ChatProps extends React.ComponentProps<'div'> {
 }
 
 export function Chat({ initialMessages, className }: ChatProps) {
-    const { messages, append, reload, stop, isLoading, input, setInput, } =
+    const { messages, append, reload, stop, isLoading, input, setInput } =
         useChat({
             initialMessages,
+            experimental_onFunctionCall: functionCallHandler,
             onResponse(response) {
                 if (response.status !== 200) {
 
