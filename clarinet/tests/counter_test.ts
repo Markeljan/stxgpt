@@ -1,4 +1,4 @@
-// counter_test.ts - a comprehensive unit test file
+// @ts-nocheck clarity test file
 import { Clarinet, Tx, Chain, Account, Contract, types } from 'https://deno.land/x/clarinet@v1.0.2/index.ts';
 import { assertEquals } from "https://deno.land/std@0.90.0/testing/asserts.ts";
 
