@@ -1,15 +1,17 @@
 'use client'
 
-import * as React from 'react'
+import { useId } from 'react'
+import Image from 'next/image'
 
 import { cn } from '@/lib/utils'
+
 
 function IconNextChat({
   className,
   inverted,
   ...props
 }: React.ComponentProps<'svg'> & { inverted?: boolean }) {
-  const id = React.useId()
+  const id = useId()
 
   return (
     <svg
@@ -498,6 +500,12 @@ function IconF({ className, ...props }: React.ComponentProps<'svg'>) {
   )
 }
 
+function IconStacks({ className, ...props }: React.ComponentProps<any>) {
+  return (
+    <Image src="/stacks-logo.svg" alt="Stacks Logo" width={32} height={32} className={cn('h-4 w-4', className)} {...props} />
+  )
+}
+
 export {
   IconEdit,
   IconNextChat,
@@ -527,5 +535,6 @@ export {
   IconUsers,
   IconExternalLink,
   IconChevronUpDown,
-  IconF
+  IconF,
+  IconStacks
 }
