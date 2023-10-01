@@ -10,10 +10,12 @@ export async function POST(req: Request) {
     console.log("request received:", json);
 
     // mainnet disabled for now
-    const network: StacksNetwork = new StacksTestnet()
+    const network: StacksNetwork = networkName === 'devnet' ? new StacksDevnet() : new StacksTestnet()
 
     const formattedContractName = contractName?.replace(/([a-z])([A-Z])/g, '$1-$2')?.toLowerCase();
-    const senderKey = networkName === process.env.DEPLOYER_PRIVATE_KEY as string;
+    const senderKey = networkName === 'devnet' ?
+        '753b7cc01a1a2e86221266a154af739463fce51219d97e4f856cd7200c3bd2a601' :
+        process.env.DEPLOYER_PRIVATE_KEY as string;
 
     const txOptions = {
         contractName: formattedContractName || 'smart-contract-gpt-contract',

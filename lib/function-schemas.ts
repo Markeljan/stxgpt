@@ -11,7 +11,7 @@ export const functionSchemas: ChatRequestOptions['functions'] = [
                 networkName: {
                     type: 'string',
                     description:
-                        `testnet unless overrided with mainnet or devnet.`
+                        `testnet, mainnet, or devnet.  Defaults to testnet.`
                 },
                 contractName: {
                     type: 'string'

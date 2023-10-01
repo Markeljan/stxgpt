@@ -15,7 +15,8 @@ const DeployContractButton = ({ sourceCode }: { sourceCode: string }) => {
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
-    const network: StacksNetwork = new StacksTestnet()
+    const networkName = 'devnet'
+    const network: StacksNetwork = networkName === 'devnet' ? new StacksDevnet() : new StacksTestnet()
 
     function deploy() {
         doContractDeploy({
