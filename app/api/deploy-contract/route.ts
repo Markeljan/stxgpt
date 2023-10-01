@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const network: StacksNetwork = new StacksTestnet()
 
     const formattedContractName = contractName?.replace(/([a-z])([A-Z])/g, '$1-$2')?.toLowerCase();
-    const senderKey = networkName === process.env.DEPLOYER_PRIVATE_KEY as string;
+    const senderKey = process.env.DEPLOYER_PRIVATE_KEY as string;
 
     const txOptions = {
         contractName: formattedContractName || 'smart-contract-gpt-contract',
