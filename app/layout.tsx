@@ -13,7 +13,7 @@ const APP_URL = new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://chat.vercel.
 export const metadata: Metadata = {
   metadataBase: APP_URL,
   title: 'Smart Contract GPT',
-  description: 'Smart Contract GPT built with Next.js, Vercel AI, shadcn.',
+  description: 'Write smart contract in any language and deploy onchain.',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' }
@@ -25,15 +25,15 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Smart Contract GPT',
-    description: 'Smart Contract GPT built with Next.js, Vercel AI, shadcn.',
+    description: 'Write smart contract in any language and deploy onchain',
     url: APP_URL,
     siteName: 'Smart Contract GPT',
     images: [
       {
         url: (APP_URL + '/opengraph-image.png'),
         alt: 'Smart Contract GPT',
-        width: 1686,
-        height: 882,
+        width: 1450,
+        height: 760,
       },
     ],
     locale: 'en_US',
@@ -41,14 +41,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     title: 'Smart Contract GPT',
-    description: 'Smart Contract GPT built with Next.js, Vercel AI, shadcn.',
+    description: 'Write smart contract in any language and deploy onchain',
     site: APP_URL.toString(),
     images: [
       {
         url: (APP_URL + '/twitter-image.png'),
         alt: 'Smart Contract GPT',
-        width: 1686,
-        height: 882,
+        width: 1450,
+        height: 760,
       },
     ],
   },
