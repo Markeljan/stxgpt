@@ -8,6 +8,7 @@ import {
 } from "@stacks/transactions";
 import { userSession } from "@/components/connect-wallet";
 import { Button } from "./ui/button";
+import { nanoid } from "ai";
 
 const DeployContractButton = ({ sourceCode }: { sourceCode: string }) => {
     const { doContractDeploy } = useConnect();
@@ -23,7 +24,7 @@ const DeployContractButton = ({ sourceCode }: { sourceCode: string }) => {
                 name: 'Smart Contract GPT',
                 icon: 'https://smart-contract-gpt.vercel.app/stacks-logo.svg',
             },
-            contractName: 'smart-contract-gpt-contract',
+            contractName: 'sc-gpt-' + nanoid(2),
             codeBody: sourceCode || COUNTER_CONTRACT,
             network,
             anchorMode: AnchorMode.Any,
