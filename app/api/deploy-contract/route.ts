@@ -1,41 +1,60 @@
-import { makeContractDeploy, broadcastTransaction, AnchorMode } from '@stacks/transactions';
-import { StacksTestnet, StacksMainnet, StacksDevnet, StacksNetwork } from '@stacks/network';
+import {
+  makeContractDeploy,
+  broadcastTransaction,
+  AnchorMode,
+  getNonce,
+  getAddressFromPrivateKey,
+} from "@stacks/transactions";
+import { StacksTestnet, StacksMainnet, StacksDevnet, StacksNetwork } from "@stacks/network";
 
-export const runtime = 'edge'
+export const runtime = "edge";
 
 export async function POST(req: Request) {
-    const json = await req.json()
-    const { networkName = 'testnet', contractName, sourceCode } = json
+  const json = await req.json();
+  const { networkName = "testnet", contractName, sourceCode } = json;
 
-    console.log("request received:", json);
+  console.log("request received:", json);
 
-    // mainnet disabled for now
-    const network: StacksNetwork = new StacksTestnet()
+  // mainnet disabled for now
+  const network: StacksNetwork = new StacksTestnet();
 
-    const formattedContractName = contractName?.replace(/([a-z])([A-Z])/g, '$1-$2')?.toLowerCase();
-    const senderKey = process.env.DEPLOYER_PRIVATE_KEY as string;
+  const formattedContractName = contractName?.replace(/([a-z])([A-Z])/g, "$1-$2")?.toLowerCase();
+  const senderKey = process.env.DEPLOYER_PRIVATE_KEY as string;
 
-    const txOptions = {
-        contractName: formattedContractName || 'smart-contract-gpt-contract',
-        codeBody: sourceCode || COUNTER_CONTRACT,
-        senderKey,
-        network,
-        anchorMode: AnchorMode.Any,
-        fee: BigInt(1000),
-    };
+  const senderAddress = getAddressFromPrivateKey(senderKey, network.version);
 
-    try {
-        const transaction = await makeContractDeploy(txOptions);
-        const broadcastResponse = await broadcastTransaction(transaction, network);
-        const txId = broadcastResponse.txid || broadcastResponse.error;
-        const deploymentData = { networkName, txId }
-        console.log("deploymentData:", deploymentData)
-        return new Response(JSON.stringify(deploymentData));
-    } catch (error) {
-        const err = error as Error
-        console.error(`Error in deployContract: ${err.message}`);
-        return new Response(JSON.stringify({ error: `Error in deployContract: ${err.message}` }), { status: 500 });
+  const nonce = (await getNonce(senderAddress, network)) + BigInt(1);
+
+  const txOptions = {
+    contractName: formattedContractName || "smart-contract-gpt-contract",
+    codeBody: sourceCode || COUNTER_CONTRACT,
+    senderKey,
+    network,
+    nonce,
+    anchorMode: AnchorMode.Any,
+    fee: BigInt(3000),
+  };
+
+  try {
+    const transaction = await makeContractDeploy(txOptions);
+    console.log("transaction:", transaction);
+    const broadcastResponse = await broadcastTransaction(transaction, network);
+    console.log("broadcastResponse:", broadcastResponse);
+    const { txid, error, reason, reason_data } = broadcastResponse;
+    if (error) {
+      return new Response(JSON.stringify({ error, reason, reason_data }), { status: 500 });
     }
+    const deploymentData = {
+      txid,
+      contractName: formattedContractName,
+      network: networkName,
+    };
+    console.log("deploymentData:", deploymentData);
+    return new Response(JSON.stringify(deploymentData));
+  } catch (error) {
+    console.error("error in route:", error);
+    return new Response(JSON.stringify({ error }), { status: 500 });
+  }
 }
 
 const COUNTER_CONTRACT = `;; counter
@@ -54,4 +73,4 @@ const COUNTER_CONTRACT = `;; counter
         (ok new-val)))
 
 (define-read-only (read-counter) ;; read value of counter
-    (ok (var-get counter)))`
+    (ok (var-get counter)))`;
