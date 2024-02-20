@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     network,
     nonce,
     anchorMode: AnchorMode.Any,
-    fee: BigInt(3000),
+    fee: BigInt(1000000), // 1 STX
   };
 
   try {
