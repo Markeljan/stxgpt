@@ -10,9 +10,9 @@ Smart Contract GPT is a tool designed to assist developers in deploying Clarity 
 ## Features
 
 - **Code Conversion**: Convert and adapt smart contract code with the help of our AI chatbot.
-- **Deployment Options**: Choose between testnet, mainnet, or devnet for deployment.
+- **Deployment Options**: Testnet only deployment for now.
 - **Sponsored Deployment**: Deploy without needing a wallet using our sponsored deployment option.
-- **REST API**: Use our publicly accessible API for deployments on testnet at `smart-contract-gpt.vercel.app/api/deploy-contract`.
+- **REST API**: Use our publicly accessible API for deployments on testnet at `smart-contract-gpt.com`.
 
 ## How It Works
 
@@ -23,7 +23,7 @@ Built using Next.js, Vercel-AI, OpenAI, Stacks.js, and Clarinet, our chatbot is 
 To get started, you'll need to create a `.env.local`
 
 ```env.local
-# App URL example: https://chat.vercel.ai
+# App URL example: https://smart-contract-gpt.com
 NEXT_PUBLIC_APP_URL=
 
 # OpenAI API Key
@@ -36,7 +36,7 @@ DEPLOYER_PRIVATE_KEY=
 ## Challenges & Learnings
 
 - Block Times: Long block times on testnet posed a challenge. We recommend setting up a devnet for a more optimal experience.
-- Best Practices: Ensured up-to-date practices by incorporating SIP-009 examples from popular NFT contracts on Stacks Mainnet.
+- Best Practices: Ensured up-to-date practices by incorporating SIP-009 examples from popular NFT contracts on Stacks.
 
 ## Technologies Used
 
@@ -49,6 +49,6 @@ Stacks.js
 
 ## Links
 
-- [Hosted App](smart-contract-gpt.vercel.app)
+- [Hosted App](smart-contract-gpt.com)
 - [Bitcoin Olympics Hackathon submission](https://devpost.com/software/smart-contract-gpt)
 - [Hiro Explorer Deployments](https://explorer.hiro.so/address/ST35TFTK3KTSTM6ZXX8232SDYREJYGPQJ7SKPZN9X?chain=testnet)

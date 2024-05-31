@@ -1,86 +1,86 @@
-import { Metadata } from 'next'
+import { Metadata, Viewport } from "next";
+import { JetBrains_Mono as FontMono, Inter as FontSans } from "next/font/google";
 
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react";
 
-import '@/app/globals.css'
-import { fontMono, fontSans } from '@/lib/fonts'
-import { cn } from '@/lib/utils'
-import { Providers } from '@/components/providers'
-import { Header } from '@/components/header'
+import "@/app/globals.css";
+import { cn } from "@/lib/utils";
+import { Providers } from "@/components/providers";
+import { Header } from "@/components/header";
+import { APP_URL } from "@/app/config";
 
-const APP_URL = new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://chat.vercel.ai')
+export const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+export const fontMono = FontMono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
+
+export const runtime = "edge";
 
 export const metadata: Metadata = {
-  metadataBase: APP_URL,
-  title: 'Smart Contract GPT',
-  description: 'Write smart contract in any language and deploy onchain.',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' }
-  ],
+  title: "Smart Contract GPT",
+  description: "Write smart contract in any language and deploy to Stacks.",
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png'
+    icon: "/favicon.ico",
   },
   openGraph: {
-    title: 'Smart Contract GPT',
-    description: 'Write smart contract in any language and deploy onchain',
+    title: "Smart Contract GPT",
+    description: "Write smart contract in any language and deploy to Stacks",
     url: APP_URL,
-    siteName: 'Smart Contract GPT',
+    siteName: "Smart Contract GPT",
     images: [
       {
-        url: (APP_URL + '/opengraph-image.png'),
-        alt: 'Smart Contract GPT',
+        url: `${APP_URL}/opengraph-image.png`,
+        alt: "Smart Contract GPT",
         width: 1450,
         height: 760,
       },
     ],
-    locale: 'en_US',
-    type: 'website',
+    locale: "en_US",
+    type: "website",
   },
   twitter: {
-    title: 'Smart Contract GPT',
-    description: 'Write smart contract in any language and deploy onchain',
-    site: APP_URL.toString(),
+    title: "Smart Contract GPT",
+    description: "Write smart contract in any language and deploy to Stacks",
+    site: APP_URL,
     images: [
       {
-        url: (APP_URL + '/twitter-image.png'),
-        alt: 'Smart Contract GPT',
+        url: `${APP_URL}/twitter-image.png`,
+        alt: "Smart Contract GPT",
         width: 1450,
         height: 760,
       },
     ],
   },
-}
+  metadataBase: new URL(APP_URL),
+};
 
-interface RootLayoutProps {
-  children: React.ReactNode
-}
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
 
-export default function RootLayout({ children }: RootLayoutProps) {
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body
-        className={cn(
-          'font-sans antialiased',
-          fontSans.variable,
-          fontMono.variable
-        )}
-      >
+      <body className={cn("font-sans antialiased", fontSans.variable, fontMono.variable)}>
         <Toaster />
-        <Providers attribute="class" defaultTheme="system" enableSystem >
+        <Providers attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
             <Header />
-            
-              <main className="flex flex-col flex-1 bg-muted/50">{children}</main>
-
+            <Analytics />
+            <main className="flex flex-col flex-1 bg-muted/50">{children}</main>
           </div>
         </Providers>
-
       </body>
     </html>
-  )
+  );
 }

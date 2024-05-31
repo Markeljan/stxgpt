@@ -1,52 +1,57 @@
-'use client'
+"use client";
 
-import { useChat, type Message } from 'ai/react'
-import { toast } from 'react-hot-toast'
+import { useChat, type Message } from "ai/react";
+import { nanoid } from "ai";
+import { toast } from "react-hot-toast";
 
-import { cn } from '@/lib/utils'
-import { ChatList } from '@/components/chat-list'
-import { ChatPanel } from '@/components/chat-panel'
-import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
-import functionCallHandler from '@/lib/function-call-handler'
+import { cn } from "@/lib/utils";
+import { ChatList } from "@/components/chat-list";
+import { ChatPanel } from "@/components/chat-panel";
+import { ChatScrollAnchor } from "@/components/chat-scroll-anchor";
 
-
-export interface ChatProps extends React.ComponentProps<'div'> {
-    initialMessages?: Message[]
-}
+type ChatProps = React.ComponentProps<"div"> & {
+  initialMessages?: Message[];
+};
 
 export function Chat({ initialMessages, className }: ChatProps) {
-    const { messages, append, reload, stop, isLoading, input, setInput } =
-        useChat({
-            initialMessages,
-            experimental_onFunctionCall: functionCallHandler,
-            onResponse(response) {
-                if (response.status !== 200) {
+  const { messages, append, reload, stop, isLoading, input, setInput, handleSubmit } = useChat({
+    initialMessages,
+    onResponse(response) {
+      if (response.status !== 200) {
+        toast.error(`${response.status} ${response.statusText}`);
+      }
+    },
+  });
 
-                    toast.error(response.status + ' ' + response.statusText)
-                }
-            },
-        })
-
-    return (
-        <>
-            <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
-                {messages.length ? (
-                    <>
-                        <ChatList messages={messages} />
-                        <ChatScrollAnchor trackVisibility={isLoading} />
-                    </>
-                ) : <></>
-                }
-            </div>
-            <ChatPanel
-                isLoading={isLoading}
-                stop={stop}
-                append={append}
-                reload={reload}
-                messages={messages}
-                input={input}
-                setInput={setInput}
+  return (
+    <>
+      <div className={cn("pb-[200px] pt-4 md:pt-10", className)}>
+        {messages.length ? (
+          <>
+            <ChatList
+              messages={messages}
+              onFinishContractDeploy={(txData) =>
+                append({
+                  id: nanoid(),
+                  role: "system",
+                  content: `There has been a contract deployment.  Relay the result to the user:
+                  ${JSON.stringify(txData, null, 2)}`,
+                })
+              }
             />
-        </>
-    )
+            <ChatScrollAnchor trackVisibility={isLoading} />
+          </>
+        ) : null}
+      </div>
+      <ChatPanel
+        isLoading={isLoading}
+        stop={stop}
+        handleSubmit={handleSubmit}
+        reload={reload}
+        messages={messages}
+        input={input}
+        setInput={setInput}
+      />
+    </>
+  );
 }

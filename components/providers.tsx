@@ -1,35 +1,32 @@
-'use client'
+"use client";
 
-import { ThemeProvider as NextThemesProvider } from 'next-themes'
-import { ThemeProviderProps } from 'next-themes/dist/types'
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { ThemeProviderProps } from "next-themes/dist/types";
+import { AuthOptions, Connect } from "@stacks/connect-react";
 
-import { TooltipProvider } from '@/components/ui/tooltip'
-import { Connect } from '@stacks/connect-react'
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { APP_URL } from "@/app/config";
+import { useUserSession } from "@/lib/hooks/use-user-session";
 
-import { userSession } from '@/components/connect-wallet'
+const appDetails = {
+  name: "Smart Contract GPT",
+  icon: `${APP_URL}/stacks.png`,
+};
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
-    let icon;
-    if (typeof window !== "undefined") {
-        icon = window.location.origin + "/nft-logo.png";
-    }
-    return (
-        <Connect
-            authOptions={{
-                appDetails: {
-                    name: "Smart Contract GPT",
-                    icon: icon || '',
-                },
-                redirectTo: "/",
-                onFinish: () => {
-                    window.location.reload();
-                },
-                userSession,
-            }}
-        >
-            <NextThemesProvider {...props} >
-                <TooltipProvider>{children}</TooltipProvider>
-            </NextThemesProvider>
-        </Connect>
-    )
+  const { setUserSession } = useUserSession();
+
+  const authOptions: AuthOptions = {
+    appDetails,
+    onFinish({ userSession: newSession }) {
+      setUserSession(newSession);
+    },
+  };
+  return (
+    <Connect authOptions={authOptions}>
+      <NextThemesProvider {...props}>
+        <TooltipProvider>{children}</TooltipProvider>
+      </NextThemesProvider>
+    </Connect>
+  );
 }

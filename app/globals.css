@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -51,7 +49,6 @@
   }
 }
 
-
 @layer base {
   * {
     @apply border-border;
@@ -59,5 +56,9 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  .reactMarkDown a {
+    @apply text-secondary-foreground underline hover:text-blue-500 hover:no-underline;  
   }
 }

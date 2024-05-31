@@ -1,28 +1,21 @@
-import { OpenAIStream, StreamingTextResponse } from "ai";
-import { Configuration, OpenAIApi } from "openai-edge";
-import { SYSTEM_PROMPT, EXAMPLE_SIP10_FUNGIBLE_TOKEN, EXAMPLE_POAP_NON_FUNGIBLE_TOKEN } from "@/lib/prompts";
+import { streamText } from "ai";
+import { openai } from "@ai-sdk/openai";
+
+import { SYSTEM_PROMPT } from "@/lib/prompts";
+import { toolSchemas } from "@/lib/tool-schemas";
+
 export const runtime = "edge";
-
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
 
 export async function POST(req: Request) {
   const json = await req.json();
-  const { messages, functions } = json;
+  const { messages } = json;
 
-  const res = await openai.createChatCompletion({
-    model: "gpt-4-turbo-preview",
-    messages: [SYSTEM_PROMPT, EXAMPLE_SIP10_FUNGIBLE_TOKEN, EXAMPLE_POAP_NON_FUNGIBLE_TOKEN, ...messages],
-    functions,
-    temperature: 0.2,
-    top_p: 0.1,
-    stream: true,
+  const result = await streamText({
+    model: openai("gpt-4o"),
+    system: SYSTEM_PROMPT,
+    messages,
+    tools: toolSchemas,
   });
 
-  const stream = OpenAIStream(res);
-
-  return new StreamingTextResponse(stream);
+  return result.toAIStreamResponse();
 }
