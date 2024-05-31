@@ -10,12 +10,12 @@ import { Providers } from "@/components/providers";
 import { Header } from "@/components/header";
 import { APP_URL } from "@/app/config";
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-export const fontMono = FontMono({
+const fontMono = FontMono({
   subsets: ["latin"],
   variable: "--font-mono",
 });
