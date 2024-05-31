@@ -22,22 +22,6 @@ export function ChatMessage({ message, onFinishContractDeploy, ...props }: ChatM
     message.content = toolCallResult.explorerUrl;
   }
 
-  //   [
-  //     {
-  //         "toolCallId": "call_AQ5VlLyC9oQc7BMT5opKvzZn",
-  //         "toolName": "deploy_contract",
-  //         "args": {
-  //             "networkName": "testnet",
-  //             "contractName": "yolomcswagggg",
-  //             "sourceCode": "(define-data-var counter int 0)\n\n(define-public (increment)\n  (begin\n    (var-set counter (+ (var-get counter) 1))\n    (ok (var-get counter))\n  )\n)\n\n(define-public (decrement)\n  (begin\n    (var-set counter (- (var-get counter) 1))\n    (ok (var-get counter))\n  )\n)\n\n(define-read-only (get-counter)\n  (ok (var-get counter))\n)"
-  //         },
-  //         "result": {
-  //             "explorerUrl": "https://explorer.hiro.so/txid/3b2ee8f4a7dc95ec8608a9173da82e5e6d42d840106269ef50587f1394b1b37e?chain=testnet&api=https://api.nakamoto.testnet.hiro.so",
-  //             "contractName": "yolomcswagggg",
-  //             "network": "testnet"
-  //         }
-  //     }
-  // ]
   return (
     <div className={cn("group relative mb-4 flex items-start md:-ml-12")} {...props}>
       <div
