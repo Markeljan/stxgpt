@@ -1,13 +1,13 @@
 "use client";
 
+import { generateId } from "ai";
 import { useChat, type Message } from "ai/react";
-import { nanoid } from "ai";
 import { toast } from "react-hot-toast";
 
-import { cn } from "@/lib/utils";
 import { ChatList } from "@/components/chat-list";
 import { ChatPanel } from "@/components/chat-panel";
 import { ChatScrollAnchor } from "@/components/chat-scroll-anchor";
+import { cn } from "@/lib/utils";
 
 type ChatProps = React.ComponentProps<"div"> & {
   initialMessages?: Message[];
@@ -32,7 +32,7 @@ export function Chat({ initialMessages, className }: ChatProps) {
               messages={messages}
               onFinishContractDeploy={(txData) =>
                 append({
-                  id: nanoid(),
+                  id: generateId(),
                   role: "system",
                   content: `There has been a contract deployment.  Relay the result to the user:
                   ${JSON.stringify(txData, null, 2)}`,

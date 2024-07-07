@@ -1,23 +1,31 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { AppConfig, UserSession } from "@stacks/connect-react";
 
-import { useIsClient } from "@/lib/hooks/use-is-client";
+import { useIsMounted } from "@/lib/hooks/use-is-mounted";
 
 export const useUserSession = () => {
-  const [userSession, setUserSession] = useState<UserSession>();
-
-  const isClient = useIsClient();
+  const [userSession, setUserSessionState] = useState<UserSession | null>(null);
+  const isMounted = useIsMounted();
 
   useEffect(() => {
-    if (isClient && !userSession) {
+    if (!userSession) {
       const appConfig = new AppConfig(["store_write", "publish_data"]);
-      const userSession = new UserSession({ appConfig });
-      setUserSession(userSession);
+      const newUserSession = new UserSession({ appConfig });
+      if (isMounted()) {
+        setUserSessionState(newUserSession);
+      }
     }
-  }, [isClient]);
+  }, [userSession, isMounted]);
+
+  const setUserSession = useCallback(
+    (newSession: UserSession) => {
+      if (isMounted()) {
+        setUserSessionState(newSession);
+      }
+    },
+    [isMounted]
+  );
 
   return { userSession, setUserSession };
 };

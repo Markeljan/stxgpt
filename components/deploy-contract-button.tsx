@@ -1,14 +1,14 @@
 "use client";
 
-import { nanoid } from "ai";
 import { useConnect } from "@stacks/connect-react";
-import { AnchorMode, ChainID } from "@stacks/transactions";
+import { AnchorMode } from "@stacks/transactions";
+import { generateId } from "ai";
 
+import { APP_URL } from "@/app/config";
 import { Button } from "@/components/ui/button";
+import { useAccount } from "@/lib/hooks/use-account";
 import { getExplorerUrl, getNextPossibleNonce, nakamotoTestnet } from "@/lib/stacks";
 import { DeploymentData } from "@/lib/types";
-import { useAccount } from "@/lib/hooks/use-account";
-import { APP_URL } from "@/app/config";
 
 type DeployContractButtonProps = {
   getSourceCode: () => string;
@@ -22,7 +22,7 @@ export const DeployContractButton = ({ getSourceCode, onFinishContractDeploy }: 
   const deployContract = async () => {
     if (!stxAddress) return;
     const nextPossibleNonce = await getNextPossibleNonce(stxAddress);
-    const contractName = "sc-gpt-" + nanoid(4);
+    const contractName = "sc-gpt-" + generateId(4);
     doContractDeploy({
       appDetails: {
         name: "Smart Contract GPT",

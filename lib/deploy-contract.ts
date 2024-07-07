@@ -1,9 +1,16 @@
-import { makeContractDeploy, broadcastTransaction, AnchorMode, getAddressFromPrivateKey, SignedContractDeployOptions } from "@stacks/transactions";
-import { StacksNetworkName } from "@stacks/network";
-import { getExplorerUrl, getNextPossibleNonce, nakamotoTestnet, requestFaucetFunds } from "@/lib/stacks";
-import { nanoid } from "ai";
-import { DeploymentData } from "@/lib/types";
+import { generateId } from "ai";
+
 import { DEPLOYER_PRIVATE_KEY } from "@/app/config";
+import { getExplorerUrl, getNextPossibleNonce, nakamotoTestnet, requestFaucetFunds } from "@/lib/stacks";
+import { DeploymentData } from "@/lib/types";
+import { StacksNetworkName } from "@stacks/network";
+import {
+  AnchorMode,
+  broadcastTransaction,
+  getAddressFromPrivateKey,
+  makeContractDeploy,
+  SignedContractDeployOptions,
+} from "@stacks/transactions";
 
 type DeployContractParams = {
   networkName?: StacksNetworkName;
@@ -13,7 +20,7 @@ type DeployContractParams = {
 
 export const deployContract = async ({
   networkName = "testnet",
-  contractName = `smart-contract-gpt-${nanoid()}`,
+  contractName = `smart-contract-gpt-${generateId()}`,
   sourceCode,
 }: DeployContractParams): Promise<
   { error: string } | { explorerUrl: string; contractName: string; network: string }
@@ -40,7 +47,7 @@ export const deployContract = async ({
     senderKey: DEPLOYER_PRIVATE_KEY,
     nonce: nextPossibleNonce,
     anchorMode: AnchorMode.Any,
-    fee: BigInt(1000000), // 1 STX
+    fee: BigInt(1_000_000), // 1 STX
   };
 
   const transaction = await makeContractDeploy(txOptions);

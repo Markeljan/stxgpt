@@ -1,8 +1,10 @@
 import { type FC, memo, useEffect, useState } from "react";
+
+import { generateId } from "ai";
 import { useTheme } from "next-themes";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkCold, coldarkDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { nanoid } from "ai";
+
 import { DeployContractButton } from "@/components/deploy-contract-button";
 import { Button } from "@/components/ui/button";
 import { IconCheck, IconCopy, IconDownload } from "@/components/ui/icons";
@@ -62,7 +64,7 @@ export const CodeBlock: FC<CodeBlockProps> = memo(({ language, value, onFinishCo
       return;
     }
     const fileExtension = programmingLanguages[language] || ".file";
-    const suggestedFileName = `sc-gpt-${nanoid()}${fileExtension}`;
+    const suggestedFileName = `sc-gpt-${generateId()}${fileExtension}`;
     const fileName = window.prompt("Enter file name" || "", suggestedFileName);
 
     if (!fileName) {
