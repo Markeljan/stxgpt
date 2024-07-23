@@ -64,7 +64,7 @@ export const CodeBlock: FC<CodeBlockProps> = memo(({ language, value, onFinishCo
       return;
     }
     const fileExtension = programmingLanguages[language] || ".file";
-    const suggestedFileName = `sc-gpt-${generateId()}${fileExtension}`;
+    const suggestedFileName = `stxgpt-${generateId()}${fileExtension}`;
     const fileName = window.prompt("Enter file name" || "", suggestedFileName);
 
     if (!fileName) {

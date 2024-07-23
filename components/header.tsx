@@ -11,7 +11,7 @@ export async function Header() {
       </div>
       <div className="flex flex-col items-center px-4 ">
         <p className="hidden lg:flex text-lg lg:text-2xl font-semibold text-primary pointer-events-none select-none">
-          Smart Contract GPT
+          STXGPT
         </p>
         <p className="lg:hidden text-lg lg:text-2xl font-semibold text-primary pointer-events-none select-none">
           SC GPT

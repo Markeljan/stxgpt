@@ -1,11 +1,11 @@
-# Smart Contract GPT
+# STX GPT
 
 Write smart contracts in any programming language and deploy them to the Stacks blockchain.
 ![chrome-capture-2023-9-3 (1)](https://github.com/Markeljan/smart-contract-gpt/assets/12901349/2157fb11-686c-4648-bcb5-6157b6cf8946)
 
 ## Overview
 
-Smart Contract GPT is a tool designed to assist developers in deploying Clarity smart contracts to the Stacks blockchain. It's especially useful for those familiar with languages like Solidity or those new to the Stacks ecosystem. The tool aids in converting syntax and bridging knowledge gaps, making the onboarding process for Stacks smart contract developers smoother.
+STXGPT is a tool designed to assist developers in deploying Clarity smart contracts to the Stacks blockchain. It's especially useful for those familiar with languages like Solidity or those new to the Stacks ecosystem. The tool aids in converting syntax and bridging knowledge gaps, making the onboarding process for Stacks smart contract developers smoother.
 
 ## Features
 

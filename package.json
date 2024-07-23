@@ -18,7 +18,7 @@
     "@stacks/network": "^6.13.0",
     "@stacks/transactions": "^6.15.0",
     "@vercel/analytics": "^1.2.2",
-    "ai": "^3.1.11",
+    "ai": "^3.2.33",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.279.0",

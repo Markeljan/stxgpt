@@ -22,10 +22,10 @@ export const DeployContractButton = ({ getSourceCode, onFinishContractDeploy }: 
   const deployContract = async () => {
     if (!stxAddress) return;
     const nextPossibleNonce = await getNextPossibleNonce(stxAddress);
-    const contractName = "sc-gpt-" + generateId(4);
+    const contractName = "stxgpt-" + generateId(4);
     doContractDeploy({
       appDetails: {
-        name: "Smart Contract GPT",
+        name: "STXGPT",
         icon: `${APP_URL}/stacks.png`,
       },
       contractName,

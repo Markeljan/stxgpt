@@ -9,7 +9,7 @@ import { APP_URL } from "@/app/config";
 import { useUserSession } from "@/lib/hooks/use-user-session";
 
 const appDetails = {
-  name: "Smart Contract GPT",
+  name: "STXGPT",
   icon: `${APP_URL}/stacks.png`,
 };
 

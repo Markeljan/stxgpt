@@ -23,20 +23,20 @@ const fontMono = FontMono({
 export const runtime = "edge";
 
 export const metadata: Metadata = {
-  title: "Smart Contract GPT",
+  title: "STXGPT",
   description: "Write smart contract in any language and deploy to Stacks.",
   icons: {
     icon: "/favicon.ico",
   },
   openGraph: {
-    title: "Smart Contract GPT",
+    title: "STXGPT",
     description: "Write smart contract in any language and deploy to Stacks",
     url: APP_URL,
-    siteName: "Smart Contract GPT",
+    siteName: "STXGPT",
     images: [
       {
         url: `${APP_URL}/opengraph-image.png`,
-        alt: "Smart Contract GPT",
+        alt: "STXGPT",
         width: 1450,
         height: 760,
       },
@@ -45,13 +45,13 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    title: "Smart Contract GPT",
+    title: "STXGPT",
     description: "Write smart contract in any language and deploy to Stacks",
     site: APP_URL,
     images: [
       {
         url: `${APP_URL}/twitter-image.png`,
-        alt: "Smart Contract GPT",
+        alt: "STXGPT",
         width: 1450,
         height: 760,
       },

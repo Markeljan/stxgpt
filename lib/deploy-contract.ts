@@ -20,7 +20,7 @@ type DeployContractParams = {
 
 export const deployContract = async ({
   networkName = "testnet",
-  contractName = `smart-contract-gpt-${generateId()}`,
+  contractName = `scgpt-${generateId()}`,
   sourceCode,
 }: DeployContractParams): Promise<
   { error: string } | { explorerUrl: string; contractName: string; network: string }
