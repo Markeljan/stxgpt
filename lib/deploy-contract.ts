@@ -1,69 +1,89 @@
 import { generateId } from "ai";
 
-import { DEPLOYER_PRIVATE_KEY } from "@/app/config";
-import { getExplorerUrl, getNextPossibleNonce, nakamotoTestnet, requestFaucetFunds } from "@/lib/stacks";
-import { DeploymentData } from "@/lib/types";
-import { StacksNetworkName } from "@stacks/network";
+import type { StacksNetworkName } from "@stacks/network";
 import {
-  AnchorMode,
-  broadcastTransaction,
-  getAddressFromPrivateKey,
-  makeContractDeploy,
-  SignedContractDeployOptions,
+	AnchorMode,
+	type SignedContractDeployOptions,
+	broadcastTransaction,
+	getAddressFromPrivateKey,
+	makeContractDeploy,
 } from "@stacks/transactions";
 
+import { DEPLOYER_PRIVATE_KEY } from "@/app/config";
+import {
+	getExplorerUrl,
+	getNextPossibleNonce,
+	nakamotoMainnet,
+	nakamotoTestnet,
+	requestFaucetFunds,
+} from "@/lib/stacks";
+import type { DeploymentData } from "@/lib/types";
+
 type DeployContractParams = {
-  networkName?: StacksNetworkName;
-  contractName?: string;
-  sourceCode: string;
+	networkName?: StacksNetworkName;
+	contractName?: string;
+	sourceCode: string;
 };
 
 export const deployContract = async ({
-  networkName = "testnet",
-  contractName = `scgpt-${generateId()}`,
-  sourceCode,
+	networkName = "testnet",
+	contractName = `scgpt-${generateId()}`,
+	sourceCode,
 }: DeployContractParams): Promise<
-  { error: string } | { explorerUrl: string; contractName: string; network: string }
+	| { error: string }
+	| { explorerUrl: string; contractName: string; network: StacksNetworkName }
 > => {
-  //const network = networkName === "testnet" ? nakamotoTestnet : StacksNetwork.fromName(networkName);
+	const network = networkName === "testnet" ? nakamotoTestnet : nakamotoMainnet;
 
-  const formattedContractName = contractName?.replace(/([a-z])([A-Z])/g, "$1-$2")?.toLowerCase();
+	const formattedContractName = contractName
+		?.replace(/([a-z])([A-Z])/g, "$1-$2")
+		?.toLowerCase();
 
-  const senderAddress = getAddressFromPrivateKey(DEPLOYER_PRIVATE_KEY, nakamotoTestnet.version);
-  const nextPossibleNonce = await getNextPossibleNonce(senderAddress);
+	const senderAddress = getAddressFromPrivateKey(
+		DEPLOYER_PRIVATE_KEY,
+		network.version,
+	);
 
-  if (networkName === "testnet") {
-    const { success } = await requestFaucetFunds(senderAddress);
-    if (!success) {
-      console.error("Faucet request failed");
-    }
-  }
+	const nextPossibleNonce = await getNextPossibleNonce(
+		senderAddress,
+		networkName,
+	);
 
-  const txOptions: SignedContractDeployOptions = {
-    contractName: formattedContractName,
-    codeBody: sourceCode,
-    clarityVersion: 2,
-    network: nakamotoTestnet,
-    senderKey: DEPLOYER_PRIVATE_KEY,
-    nonce: nextPossibleNonce,
-    anchorMode: AnchorMode.Any,
-    fee: BigInt(1_000_000), // 1 STX
-  };
+	if (networkName === "testnet") {
+		const { success } = await requestFaucetFunds(senderAddress);
+		if (!success) {
+			console.error("Faucet request failed");
+		}
+	}
 
-  const transaction = await makeContractDeploy(txOptions);
-  const broadcastResponse = await broadcastTransaction(transaction, nakamotoTestnet);
-  const { txid, error, reason, reason_data } = broadcastResponse;
-  if (error) {
-    console.error("Broadcast error", error, reason, reason_data);
-    return {
-      error: reason || error,
-    };
-  }
+	const txOptions: SignedContractDeployOptions = {
+		senderKey: DEPLOYER_PRIVATE_KEY,
+		contractName: formattedContractName,
+		codeBody: sourceCode,
+		clarityVersion: 2,
+		network,
+		nonce: nextPossibleNonce,
+		anchorMode: AnchorMode.Any,
+		fee: BigInt(200_000), // 0.2 STX
+	};
 
-  const deploymentData: DeploymentData = {
-    explorerUrl: getExplorerUrl(txid, nakamotoTestnet.chainId),
-    contractName: formattedContractName,
-    network: networkName,
-  };
-  return deploymentData;
+	const transaction = await makeContractDeploy(txOptions);
+	const broadcastResponse = await broadcastTransaction(
+		transaction,
+		nakamotoTestnet,
+	);
+	const { txid, error, reason, reason_data } = broadcastResponse;
+	if (error) {
+		console.error("Broadcast error", error, reason, reason_data);
+		return {
+			error: reason || error,
+		};
+	}
+
+	const deploymentData: DeploymentData = {
+		explorerUrl: getExplorerUrl(txid, networkName),
+		contractName: formattedContractName,
+		network: networkName,
+	};
+	return deploymentData;
 };

@@ -1,7 +1,7 @@
 # STX GPT
 
 Write smart contracts in any programming language and deploy them to the Stacks blockchain.
-![chrome-capture-2023-9-3 (1)](https://github.com/Markeljan/smart-contract-gpt/assets/12901349/2157fb11-686c-4648-bcb5-6157b6cf8946)
+![chrome-capture-2023-9-3 (1)](https://github.com/Markeljan/stxgpt/assets/12901349/2157fb11-686c-4648-bcb5-6157b6cf8946)
 
 ## Overview
 
@@ -12,7 +12,7 @@ STXGPT is a tool designed to assist developers in deploying Clarity smart contra
 - **Code Conversion**: Convert and adapt smart contract code with the help of our AI chatbot.
 - **Deployment Options**: Testnet only deployment for now.
 - **Sponsored Deployment**: Deploy without needing a wallet using our sponsored deployment option.
-- **REST API**: Use our publicly accessible API for deployments on testnet at `smart-contract-gpt.com`.
+- **REST API**: Use our publicly accessible API for deployments on testnet at `stxgpt.com`.
 
 ## How It Works
 
@@ -23,7 +23,7 @@ Built using Next.js, Vercel-AI, OpenAI, Stacks.js, and Clarinet, our chatbot is 
 To get started, you'll need to create a `.env.local`
 
 ```env.local
-# App URL example: https://smart-contract-gpt.com
+# App URL example: https://stxgpt.com
 NEXT_PUBLIC_APP_URL=
 
 # OpenAI API Key
@@ -49,6 +49,6 @@ Stacks.js
 
 ## Links
 
-- [Hosted App](smart-contract-gpt.com)
-- [Bitcoin Olympics Hackathon submission](https://devpost.com/software/smart-contract-gpt)
+- [Hosted App](stxgpt.com)
+- [Bitcoin Olympics Hackathon submission](https://devpost.com/software/stxgpt)
 - [Hiro Explorer Deployments](https://explorer.hiro.so/address/ST35TFTK3KTSTM6ZXX8232SDYREJYGPQJ7SKPZN9X?chain=testnet)
