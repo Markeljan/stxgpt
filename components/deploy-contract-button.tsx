@@ -1,51 +1,52 @@
-"use client";
-
 import { useConnect } from "@stacks/connect-react";
 import { AnchorMode } from "@stacks/transactions";
 import { generateId } from "ai";
+import { DEPLOYMENT_URL } from "vercel-url";
 
-import { APP_URL } from "@/app/config";
 import { Button } from "@/components/ui/button";
 import { useAccount } from "@/lib/hooks/use-account";
-import { getExplorerUrl, getNextPossibleNonce, nakamotoTestnet } from "@/lib/stacks";
-import { DeploymentData } from "@/lib/types";
+import { getExplorerUrl, getNetwork, getNextPossibleNonce } from "@/lib/stacks";
+import type { DeploymentData } from "@/lib/types";
 
 type DeployContractButtonProps = {
-  getSourceCode: () => string;
-  onFinishContractDeploy: (data: DeploymentData) => void;
+	getSourceCode: () => string;
+	onFinishContractDeploy: (data: DeploymentData) => void;
 };
 
-export const DeployContractButton = ({ getSourceCode, onFinishContractDeploy }: DeployContractButtonProps) => {
-  const { doContractDeploy } = useConnect();
-  const { stxAddress } = useAccount();
+export const DeployContractButton = ({
+	getSourceCode,
+	onFinishContractDeploy,
+}: DeployContractButtonProps) => {
+	const { doContractDeploy } = useConnect();
+	const { stxAddress, network } = useAccount();
 
-  const deployContract = async () => {
-    if (!stxAddress) return;
-    const nextPossibleNonce = await getNextPossibleNonce(stxAddress);
-    const contractName = "sc-gpt-" + generateId(4);
-    doContractDeploy({
-      appDetails: {
-        name: "Smart Contract GPT",
-        icon: `${APP_URL}/stacks.png`,
-      },
-      contractName,
-      network: nakamotoTestnet,
-      nonce: nextPossibleNonce,
-      fee: 1_000_000,
-      codeBody: getSourceCode(),
-      anchorMode: AnchorMode.Any,
-      onFinish: (txData) => {
-        const { txId, stacksTransaction } = txData;
-        const { chainId } = stacksTransaction;
-        const deploymentData = {
-          explorerUrl: getExplorerUrl(txId, chainId),
-          contractName,
-          network: "testnet",
-        };
-        onFinishContractDeploy(deploymentData);
-      },
-    });
-  };
+	const deployContract = async () => {
+		if (!stxAddress) return;
+		const nextPossibleNonce = await getNextPossibleNonce(stxAddress, network);
+		const contractName = `stxgpt-${generateId(4)}`;
+		doContractDeploy({
+			appDetails: {
+				name: "STXGPT",
+				icon: `${DEPLOYMENT_URL}/stacks.png`,
+			},
+			contractName,
+			network: getNetwork(network),
+			nonce: nextPossibleNonce,
+			fee: 200_000,
+			codeBody: getSourceCode(),
+			anchorMode: AnchorMode.Any,
+			onFinish: (txData) => {
+				const { txId } = txData;
+				const deploymentData = {
+					explorerUrl: getExplorerUrl(txId, network),
+					contractName,
+					network,
+				};
 
-  return <Button onClick={deployContract}>Deploy</Button>;
+				onFinishContractDeploy(deploymentData);
+			},
+		});
+	};
+
+	return <Button onClick={deployContract}>Deploy</Button>;
 };

@@ -1,32 +1,36 @@
 "use client";
 
+import { type AuthOptions, Connect } from "@stacks/connect-react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { ThemeProviderProps } from "next-themes/dist/types";
-import { AuthOptions, Connect } from "@stacks/connect-react";
+import { DEPLOYMENT_URL } from "vercel-url";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { APP_URL } from "@/app/config";
 import { useUserSession } from "@/lib/hooks/use-user-session";
 
 const appDetails = {
-  name: "Smart Contract GPT",
-  icon: `${APP_URL}/stacks.png`,
+	name: "STXGPT",
+	icon: `${DEPLOYMENT_URL}/stacks.png`,
 };
 
-export function Providers({ children, ...props }: ThemeProviderProps) {
-  const { setUserSession } = useUserSession();
+export function Providers({ children }: { children: React.ReactNode }) {
+	const { setUserSession } = useUserSession();
 
-  const authOptions: AuthOptions = {
-    appDetails,
-    onFinish({ userSession: newSession }) {
-      setUserSession(newSession);
-    },
-  };
-  return (
-    <Connect authOptions={authOptions}>
-      <NextThemesProvider {...props}>
-        <TooltipProvider>{children}</TooltipProvider>
-      </NextThemesProvider>
-    </Connect>
-  );
+	const authOptions: AuthOptions = {
+		appDetails,
+		onFinish({ userSession: newSession }) {
+			setUserSession(newSession);
+		},
+	};
+	return (
+		<Connect authOptions={authOptions}>
+			<NextThemesProvider
+				attribute="class"
+				defaultTheme="system"
+				enableSystem
+				storageKey="theme-preference"
+			>
+				<TooltipProvider>{children}</TooltipProvider>
+			</NextThemesProvider>
+		</Connect>
+	);
 }
